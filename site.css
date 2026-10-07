@@ -1,0 +1,1860 @@
+/*
+ * Show Package Contents: the whole site's styles.
+ *
+ * A web page of 1996–2006 (docs/MUSEUM-HANDOFF.md §2): an 800-pixel column
+ * in the middle, small Verdana, a serif for titles, underlined links (blue,
+ * purple once visited), the browser's own buttons and menus, 1px grey
+ * borders. No shadows, gradients, frosted glass, big corners or animation
+ * on scroll.
+ *
+ * THE 4PX GRID. Everything is on it, measured from the column's top-left
+ * corner: every space, size, position, corner, font size and line height
+ * is a multiple of 4px (Liv, 2 October 2026, for every change from now on).
+ * The lightbox (src/lightbox.tsx) is a grid of its own, measured from its
+ * own top-left corner, wherever it is put.
+ * The one exception is the hairline, --hair, for the 1px borders: it is
+ * taken back out of the padding beside it (calc(8px - var(--hair))) so the
+ * box round it stays on the grid. Boxes as wide as their words are widened
+ * to the grid by src/snap.ts (data-snap). After any change, run
+ * npm run check:grid, which checks all of this, and fix what it finds.
+ */
+
+/* ---- The titles' typeface ---------------------------------------------
+
+   Caladea Regular, under the SIL Open Font License (fonts/OFL.txt), kept
+   with the site rather than fetched from anyone else's (scripts/build.mjs
+   copies it from @fontsource/caladea). Until it arrives the titles are in
+   Cambria, whose measurements it shares, or Georgia. */
+
+@font-face {
+  font-family: "Caladea";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/caladea-latin-400-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Caladea";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/caladea-latin-ext-400-normal.woff2) format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Every title in Caladea: tracked in (--tracking), and drawn without the
+   extra weight Macs give type on screen, as Figma draws it. */
+h1,
+.tagline,
+.made-story,
+.label-name,
+.news-title,
+.result-name,
+.lightbox-name {
+  letter-spacing: var(--tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---- Colours ---------------------------------------------------------- */
+
+:root {
+  /* The page, inside the column and out. */
+  --paper: #fff;
+  --ink: #000;
+  --quiet: #555;
+  --line: #999;
+  --tab: #eee;
+  --link: #0000ee;
+  --visited: #551a8b;
+  /* The line under the home page's title (Liv's design). */
+  --tagline: #949494;
+
+  /* The titles: Caladea Regular, tracked in by 3% of their size (Liv,
+     2 October 2026). Tracking is a share of the type, so it is in em,
+     not on the grid (it moves letters, not boxes). */
+  --serif: Caladea, Cambria, Georgia, "Times New Roman", serif;
+  --tracking: -0.03em;
+  --sans: Verdana, Geneva, Arial, sans-serif;
+
+  /* The three sizes of type, and only these (Liv, 2 October 2026): the
+     words, in Verdana; and in Caladea, the line under a title, and a
+     title. On a phone the words are a size up (below). */
+  --text: 12px/var(--leading) var(--sans);
+  /* The words' line, which what holds them is measured from: a line of
+     them (the light's switch, a swatch), the line and 4 (a New tab), the
+     line and 8 (a button, a menu, a box, a tab). */
+  --leading: 16px;
+  --subtitle: 24px/28px var(--serif);
+  --title: 36px/40px var(--serif);
+
+  --hair: 1px;
+  /* Every box drawn round with the hairline has these corners (Liv,
+     2 October 2026); a tab, its top two. */
+  --corner: 4px;
+  /* The browser's own buttons and menus as a computer's browser (Chrome)
+     draws them: a button, under the pointer and pressed; a menu. */
+  --button: #efefef;
+  --button-hover: #e5e5e5;
+  --button-pressed: #f5f5f5;
+  --button-line: #767676;
+  --button-line-hover: #4f4f4f;
+  --button-ink: #000;
+  --menu: #fff;
+  --menu-line: #767676;
+  --menu-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M2.5 2l3.5 3.5 3.5-3.5' fill='none' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E");
+
+  color-scheme: light;
+}
+
+/* Held up to the light: black, inside the column and out. */
+:root[data-light="on"] {
+  --paper: #000;
+  --ink: #e8e8e8;
+  --quiet: #aaa;
+  --line: #555;
+  --tab: #1c1c1c;
+  --link: #6cf;
+  --visited: #c9f;
+  --button: #6b6b6b;
+  --button-hover: #7b7b7b;
+  --button-pressed: #5b5b5b;
+  --button-line: #6b6b6b;
+  --button-line-hover: #7b7b7b;
+  --button-ink: #fff;
+  --menu: #3b3b3b;
+  --menu-line: #858585;
+  --menu-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M2.5 2l3.5 3.5 3.5-3.5' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+
+/* ---- The light --------------------------------------------------------
+
+   The 3D viewer eases its own background between white and black
+   (object-3d.tsx). The page's colours change along the same curve, so the
+   two are the same grey at every moment: worked out by scripts/ease.mjs,
+   which says how. One curve going dark, another coming back. The text
+   swaps colour halfway, when it reads on both. */
+
+:root {
+  --fade: 0.8s;
+  --ease: linear(0, 0.157 1.25%, 0.3 2.5%, 0.388 3.75%, 0.453 5%, 0.506 6.25%, 0.549 7.5%, 0.619 10%, 0.674 12.5%, 0.717 15%, 0.754 17.5%, 0.784 20%, 0.81 22.5%, 0.832 25%, 0.88 28.75%, 0.901 32.5%, 0.923 37.5%, 0.941 42.5%, 0.954 47.5%, 0.964 52.5%, 0.972 57.5%, 0.978 62.5%, 0.985 70%, 0.989 77.5%, 0.993 87.5%, 1 100%);
+  --swap: 0.05s;
+}
+
+:root[data-light="on"] {
+  --ease: linear(0, 0.026 1.25%, 0.051 2.5%, 0.076 3.75%, 0.1 5%, 0.124 6.25%, 0.169 7.5%, 0.215 10%, 0.259 12.5%, 0.301 15%, 0.341 17.5%, 0.38 20%, 0.417 22.5%, 0.452 25%, 0.503 28.75%, 0.551 32.5%, 0.611 37.5%, 0.668 42.5%, 0.723 47.5%, 0.778 52.5%, 0.828 57.5%, 0.869 62.5%, 0.917 70%, 0.953 77.5%, 0.982 87.5%, 1 100%);
+  --swap: 0.23s;
+}
+
+*,
+::before,
+::after {
+  transition:
+    background-color var(--fade) var(--ease),
+    border-color var(--fade) var(--ease),
+    color 0s linear var(--swap);
+}
+
+/* Coming back to a page the browser kept (src/light.ts), and for anyone
+   who asked their computer for less motion: straight there. */
+:root[data-instant] *,
+:root[data-instant] {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    transition: none !important;
+  }
+}
+
+/* ---- The page ---------------------------------------------------------- */
+
+html {
+  background: var(--paper);
+}
+
+body {
+  margin: 0;
+  padding: 16px 0;
+  color: var(--ink);
+  font: var(--text);
+  -webkit-text-size-adjust: 100%;
+}
+
+.column {
+  box-sizing: border-box;
+  width: 800px;
+  margin: 0 auto;
+  padding: 0 16px 12px;
+  background: var(--paper);
+}
+
+/* The bar asking whether the museum may record how a visitor looks round
+   (src/records.ts; Liv, 5 October 2026): over the page until it is
+   answered, as wide as the column's words, in the tabs' grey with a
+   hairline round it and the corner every box has; its words, then the
+   browser's own buttons. A grid of its own, from its top-left corner, as
+   the lightbox is (scripts/check-grid.mjs). */
+.records {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 768px;
+  margin: 0 auto 16px;
+  padding: calc(8px - var(--hair)) calc(12px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+  background: var(--tab);
+}
+
+.records[hidden] {
+  display: none;
+}
+
+.records p {
+  margin: 0;
+}
+
+/* The words take what the buttons leave (on a phone, the bar's whole
+   width), so a short line keeps the bar's grid. */
+.records p:first-child {
+  flex-grow: 1;
+}
+
+.records-choices {
+  display: flex;
+  flex: none;
+  gap: 8px;
+}
+
+a {
+  color: var(--link);
+}
+
+a:visited {
+  color: var(--visited);
+}
+
+img {
+  border: 0;
+}
+
+h1 {
+  margin: 0;
+  font: var(--title);
+}
+
+p {
+  margin: 0 0 8px;
+}
+
+.hidden {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.to-come {
+  color: var(--quiet);
+  font-style: italic;
+}
+
+/* An exhibit's year and colour (or Liv's line for it) under its title. */
+.line {
+  margin: 0;
+  color: var(--quiet);
+}
+
+/* Boxes as wide as their words, widened to the grid (src/snap.ts). */
+[data-snap] {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+/* The browser's own buttons and menus, at the grid's heights and the
+   page's size of type, drawn in every browser as a computer's Chrome
+   draws them, grey, and dark grey with the light on: a phone, a tablet
+   or Safari draws its own in its own way (an iPhone's words and arrows in
+   blue; Liv, 3 October 2026). The buttons set as words, the tiles and the
+   pictures keep their own (below). */
+button,
+select {
+  box-sizing: border-box;
+  height: calc(var(--leading) + 8px);
+  margin: 0;
+  border: var(--hair) solid var(--button-line);
+  border-radius: var(--corner);
+  color: var(--button-ink);
+  font: var(--text);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button {
+  padding: 0 8px;
+  background: var(--button);
+}
+
+@media (hover: hover) {
+  :where(button):hover {
+    border-color: var(--button-line-hover);
+    background: var(--button-hover);
+  }
+}
+
+:where(button):active {
+  background: var(--button-pressed);
+}
+
+/* A menu: its arrow drawn in, at the right. */
+select {
+  padding: 0 28px 0 4px;
+  border-color: var(--menu-line);
+  background: var(--menu) var(--menu-arrow) no-repeat right 8px center / 12px 8px;
+}
+
+/* Close, in the lightbox: the same button, a size up. */
+.lightbox .close {
+  height: 32px;
+  padding: 0 12px;
+}
+
+/* The light's switch, wherever it is: its words, underlined, in the
+   links' colour, a button set as a link is (Liv, 2 October 2026), as the
+   home page's line under its title has its own. */
+.light {
+  height: var(--leading);
+  color: var(--link);
+  font: var(--text);
+  text-decoration: underline;
+}
+
+/* Buttons set as the words round them: the light's switch, Index's
+   headings. */
+.light,
+.centre button.tagline,
+.catalogue .sort {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+/* The menu and Go, in the middle. */
+.picker {
+  display: flex;
+  gap: 4px;
+  width: fit-content;
+  height: calc(var(--leading) + 8px);
+  margin: 16px auto 8px;
+}
+
+/* Searching the museum: the browser's own box, and Search. In the middle
+   on the home page, under the title on the search page. */
+.search {
+  display: flex;
+  gap: 4px;
+  width: fit-content;
+  height: calc(var(--leading) + 8px);
+  margin: 0 auto 8px;
+}
+
+.search input {
+  box-sizing: border-box;
+  width: 240px;
+  height: calc(var(--leading) + 8px);
+  margin: 0;
+  font: var(--text);
+}
+
+/* What is new (src/pages.tsx › News), after apple.com's boxes of 2001
+   (Liv, 3 October 2026): over the menu and Search, 80 under the lowest
+   exhibit's name (more than the ring's own room under it, which is as
+   much as it has above), and 32 above the menu. Three to a row, as the tiles are on an exhibit
+   page; each box drawn round with the hairline, all of it the link (or
+   the light's switch): a title in the titles' type, an exhibit's
+   photograph, which follows the light, and a line in grey, each as wide
+   as the box (so on the grid) with what is in it in the middle, the title
+   underlined under the pointer. The boxes of a row share their three rows
+   (subgrid), so a title on two lines does not put the photograph and the
+   line of the box beside it out of line with its own (Liv, 7 October
+   2026). */
+.news {
+  display: grid;
+  grid-template-columns: 244px 248px 244px;
+  gap: 16px;
+  margin: 80px 0 32px;
+  padding: 0;
+  list-style: none;
+}
+
+.news li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  row-gap: 8px;
+}
+
+/* No wider than its place, whatever word is in it; and where a browser
+   does not know subgrid, its rows together at its top, as they were. */
+.news-box {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-row: 1 / -1;
+  grid-template-rows: subgrid;
+  align-content: start;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: calc(12px - var(--hair)) calc(12px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+  color: var(--ink);
+  font: var(--text);
+  text-align: center;
+  text-decoration: none;
+}
+
+button.news-box,
+button.news-box:is(:hover, :active) {
+  border-color: var(--line);
+  background: none;
+  cursor: pointer;
+}
+
+/* New (Liv, 3 October 2026): a tab on the box's top edge, at the left,
+   drawn as the tabs over the page are (src/ui.tsx › Tabs), in their grey,
+   the box's line running under it; as wide as its word; placed from
+   inside the hairline, so less it. */
+.news-new {
+  position: absolute;
+  top: calc(-4px - var(--leading) - var(--hair));
+  left: calc(12px - var(--hair));
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: calc(var(--leading) + 4px);
+  padding: 0 calc(8px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-bottom: 0;
+  border-radius: var(--corner) var(--corner) 0 0;
+  background: var(--tab);
+  color: var(--ink);
+}
+
+.news-title {
+  font: var(--subtitle);
+}
+
+.news-box:is(:hover, :focus-visible) .news-title {
+  text-decoration: underline;
+}
+
+.news .thumb {
+  width: auto;
+  height: 100px;
+  margin: 0;
+}
+
+.news-line {
+  color: var(--quiet);
+}
+
+footer {
+  margin-top: 16px;
+  padding-top: calc(8px - var(--hair));
+  border-top: var(--hair) solid var(--line);
+  color: var(--quiet);
+  text-align: center;
+}
+
+/* ---- Home: the name and the light in the middle, the exhibits round them */
+
+/* Where each one stands (--x, --y) is worked out in src/pages.tsx, on the
+   grid, and so are the ring's own height and where the title in it sits:
+   as much room under its lowest name as above its topmost photograph
+   (--ring-room). */
+.ring {
+  position: relative;
+  height: var(--ring-h, 600px);
+  margin: var(--ring-room, 16px) 0;
+}
+
+/* The title and its line, after Liv's design (Figma, Patina dump,
+   172:318): there drawn over a screenshot at 1.73 times the page's size,
+   so here at its sizes over 1.73, on the grid: 64 → 36, 40 → 24, 12 → 8.
+   The line's second sentence is the light's switch: a button, set as
+   the line's words, underlined. */
+.centre {
+  position: absolute;
+  top: var(--title-top, 264px);
+  left: 204px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 360px;
+  text-align: center;
+}
+
+.centre h1 {
+  align-self: stretch;
+  margin-bottom: 8px;
+}
+
+.centre .tagline {
+  align-self: stretch;
+  margin: 0;
+  color: var(--tagline);
+  font: var(--subtitle);
+}
+
+.centre button.tagline {
+  align-self: center;
+  height: 28px;
+  text-decoration: underline;
+}
+
+.exhibits {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exhibits li {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: 144px;
+  text-align: center;
+}
+
+/* Each exhibit at its size, in the middle of its column: --w and --h are
+   its share across and down of a square place (140, or on phones its
+   column's width; src/pages.tsx), put on the grid here. On the ring, its
+   top is where src/pages.tsx puts it; on phones, it stands at the foot of
+   its place, so a row stands on one line. */
+.exhibits .thumb {
+  --place-w: 140px;
+  --place-h: 140px;
+  --box-w: max(8px, round(nearest, var(--place-w) * var(--w, 1), 4px));
+  --box-h: max(8px, round(nearest, var(--place-h) * var(--h, 1), 4px));
+  width: var(--box-w);
+  height: var(--box-h);
+  margin: 0 0 4px round(down, (100% - var(--box-w)) / 2, 4px);
+}
+
+/* Under the pointer, or the keyboard, an exhibit is held up to the light
+   on its own: its backlit photograph in place of the other, at once both
+   ways, as a rollover of 2000 swapped one picture for another (on the way
+   back, src/static.ts sets data-instant for a moment, past the light's
+   fade). With the room's light on, they are all lit already, so it goes
+   the other way: the one under the pointer as it is in ordinary light
+   (Liv, 2 October 2026); not under a finger, which holds the light on
+   there (src/light.ts), and should see them all lit. */
+:root:not([data-light="on"]) .exhibits a:is(:hover, :focus-visible) .thumb .normal {
+  visibility: hidden;
+  transition: none;
+}
+
+:root:not([data-light="on"]) .exhibits a:is(:hover, :focus-visible) .thumb .backlit {
+  opacity: 1;
+  visibility: visible;
+  transition: none;
+}
+
+@media (hover: hover) {
+  :root[data-light="on"] .exhibits a:is(:hover, :focus-visible) .thumb .normal {
+    visibility: visible;
+    transition: none;
+  }
+
+  :root[data-light="on"] .exhibits a:is(:hover, :focus-visible) .thumb .backlit {
+    opacity: 0;
+    visibility: hidden;
+    transition: none;
+  }
+}
+
+.exhibits a[data-instant] .thumb img {
+  transition: none;
+}
+
+/* A long press lights the room (src/light.ts), so it neither selects
+   the name nor opens the phone's link menu. */
+.exhibits a {
+  display: block;
+  text-decoration: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* The names are underlined only under the pointer, or the keyboard. */
+.exhibits .name {
+  display: block;
+}
+
+.exhibits a:hover .name,
+.exhibits a:focus-visible .name {
+  text-decoration: underline;
+}
+
+/* Both photographs, one over the other; held up to the light, the
+   backlit one fades in over the other, along the light's curve. */
+.thumb {
+  position: relative;
+  display: block;
+  width: 120px;
+  height: 100px;
+  margin: 0 auto 4px;
+}
+
+.thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.thumb .normal {
+  transition: visibility 0s;
+}
+
+.thumb .backlit {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--fade) var(--ease),
+    visibility 0s linear var(--fade);
+}
+
+:root[data-light="on"] .thumb .normal {
+  visibility: hidden;
+  transition: visibility 0s linear var(--fade);
+}
+
+:root[data-light="on"] .thumb .backlit {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity var(--fade) var(--ease),
+    visibility 0s;
+}
+
+/* ---- A page's title, with the light's switch beside it ---------------- */
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+/* The title takes the rest of the row, beside the switch. */
+.page-head h1 {
+  flex: 1;
+}
+
+/* Level with the middle of the title beside it. */
+.page-head .light {
+  margin-top: 12px;
+}
+
+/* ---- Index: every exhibit in a table ---------------------------------- */
+
+.catalogue {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.catalogue th,
+.catalogue td {
+  box-sizing: border-box;
+  padding: 4px 8px calc(4px - var(--hair));
+  border-bottom: var(--hair) solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.catalogue th:nth-child(1) { width: 64px; }
+.catalogue th:nth-child(2) { width: 240px; }
+.catalogue th:nth-child(3) { width: 128px; }
+.catalogue th:nth-child(4) { width: 128px; }
+
+.catalogue .thumb {
+  width: 48px;
+  height: 40px;
+  margin: 0;
+}
+
+.catalogue .narrow {
+  display: none;
+}
+
+/* Its headings sort it (src/sort.ts): set as headings, underlined under
+   the pointer, an arrow after the one it is sorted by. */
+.catalogue .sort {
+  height: var(--leading);
+  color: inherit;
+  font: inherit;
+}
+
+.catalogue .sort:hover {
+  text-decoration: underline;
+}
+
+/* Search, under the table. */
+.index-page .search {
+  margin-top: 16px;
+}
+
+/* ---- About ------------------------------------------------------------- */
+
+.about main {
+  min-height: 240px;
+}
+
+.about main p {
+  max-width: 560px;
+}
+
+/* ---- Search: what was found, best first ------------------------------- */
+
+.search-page main {
+  min-height: 240px;
+}
+
+.search-page .search {
+  margin: 0 0 16px;
+}
+
+.count {
+  margin-bottom: 16px;
+  color: var(--quiet);
+}
+
+.results {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.results li {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.results .thumb {
+  width: 96px;
+  height: 80px;
+  margin: 0;
+}
+
+.result-picture {
+  display: block;
+}
+
+.results p {
+  margin: 0;
+}
+
+.result-name {
+  font: var(--subtitle);
+}
+
+.result-line {
+  color: var(--quiet);
+}
+
+.result-words {
+  max-width: 560px;
+  margin-top: 4px;
+}
+
+/* ---- An exhibit: tabs, the exhibit and its title, four boxes, its label */
+
+/* Past the tabs, for the keyboard: over the first tab, its own size (so
+   it is widened to the grid like the tabs), but cut out of sight until it
+   has the focus. */
+nav {
+  position: relative;
+}
+
+.skip {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  height: calc(var(--leading) + 8px);
+  padding: 0 calc(8px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+  background: var(--paper);
+  clip-path: inset(50%);
+}
+
+.skip:focus {
+  clip-path: none;
+}
+
+/* The page skipped to takes the focus without a ring of its own. */
+main:focus {
+  outline: none;
+}
+
+/* The tabs sit on a line that runs under them all; the open one is drawn
+   over the line, so it joins the page below. */
+.tabs {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0 -16px;
+  padding: 8px 16px 0;
+  list-style: none;
+}
+
+.tabs::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  border-top: var(--hair) solid var(--line);
+  content: "";
+}
+
+.tabs a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: calc(var(--leading) + 8px);
+  padding: 0 calc(8px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-bottom: 0;
+  border-radius: var(--corner) var(--corner) 0 0;
+  background: var(--tab);
+  text-decoration: none;
+}
+
+.tabs a:hover {
+  text-decoration: underline;
+}
+
+/* A tab stays blue once visited, so the row stays one colour. */
+.tabs a:visited {
+  color: var(--link);
+}
+
+.tabs a[aria-current="page"] {
+  z-index: 2;
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: bold;
+}
+
+.feature {
+  display: grid;
+  grid-template-areas: "stage caption";
+  grid-template-columns: 480px 264px;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+/* In the middle of the exhibit's height. Every line in it is a multiple
+   of 8 tall (40, 16, the switch 32 and the spaces), so its middle, and
+   so its top, is on the grid. */
+.caption {
+  display: flex;
+  flex-direction: column;
+  grid-area: caption;
+  align-self: center;
+}
+
+.caption h1 {
+  margin-bottom: 8px;
+}
+
+/* The switch under the exhibit's title and line. */
+.caption .light {
+  align-self: flex-start;
+  margin-top: 16px;
+}
+
+/* A magnifying glass over it: a click enlarges it (src/lightbox.tsx).
+   Enlarged, an open hand, to drag it round. While it is dragged round,
+   the hand that grabs. The viewer's controls write cursor: auto on its
+   canvas, so the canvas is told to take the stage's. */
+.stage {
+  position: relative;
+  grid-area: stage;
+  width: 480px;
+  height: 360px;
+  cursor: zoom-in;
+}
+
+.lightbox .stage {
+  cursor: grab;
+}
+
+.stage[data-turning] {
+  cursor: grabbing;
+}
+
+.stage canvas {
+  cursor: inherit !important;
+}
+
+/* The picture fades into the page at its foot and sides, so the shadow
+   under the exhibit does not stop at its edges (Liv, 2 October 2026): the
+   last tenth down, where no exhibit reaches (the cordless phone's base
+   comes nearest), and 8% in from each side; and 8% down from its head
+   (Liv, 4 October 2026), so held up to the light its glow has no edge
+   there either (the cordless phone's top comes nearest, a tenth down).
+   The card fades the same (src/card.ts › FADE). */
+.stage canvas,
+.stage .poster {
+  mask-image:
+    linear-gradient(to bottom, transparent, #000 8%, #000 90%, transparent),
+    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-composite: intersect;
+}
+
+/* The photograph, standing in for the 3D until it is in: as large as the
+   3D first is, and where it is (Liv, 3 October 2026; src/stage.tsx hands
+   it its place, as shares of the stage, from images/posters.json), its
+   box on the grid. */
+.poster {
+  position: absolute;
+  top: round(nearest, var(--top), 4px);
+  left: round(nearest, var(--left), 4px);
+  width: round(nearest, var(--width), 4px);
+  height: round(nearest, var(--height), 4px);
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* The few classes the viewer (object-3d.tsx) puts on its own elements, as
+   in the kit's index.html. Not its bg-white: see-through here, so the
+   photograph shows until the 3D fades in over it. */
+.stage .relative { position: relative; }
+.stage .absolute { position: absolute; }
+.stage .inset-0 { inset: 0; }
+.stage .aspect-\[4\/3\] { aspect-ratio: 4 / 3; }
+.stage .w-full { width: 100%; }
+.stage .size-full { width: 100%; height: 100%; }
+.stage .touch-none { touch-action: none; }
+.stage .object-contain { object-fit: contain; }
+.stage .p-6 { box-sizing: border-box; padding: 24px; }
+.stage .opacity-0 { opacity: 0; }
+.stage .transition-opacity { transition: opacity 300ms; }
+
+/* Without WebGL the viewer puts up the ordinary-light photograph (its
+   img.p-6); the page's own beneath it is the same picture, placed as the
+   3D would be (above), and follows the light, so that one shows instead.
+   A made one has none of its own (src/stage.tsx), so there the viewer's
+   shows. */
+.stage img.p-6 { visibility: hidden; }
+.stage[data-made] img.p-6 { visibility: visible; }
+
+/* Three to a row, as wide as the column, 16 apart. The 736 left does not
+   split in three on the grid, so the middle one is 4 wider. */
+.tiles {
+  display: grid;
+  grid-template-columns: 244px 248px 244px;
+  gap: 16px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tile {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 64px;
+  padding: calc(8px - var(--hair)) calc(12px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+  text-decoration: none;
+}
+
+.tile:has(img) {
+  padding-right: calc(72px - var(--hair));
+}
+
+.tile b {
+  display: block;
+}
+
+a.tile b {
+  text-decoration: underline;
+}
+
+span.tile {
+  color: var(--quiet);
+}
+
+/* Making of: the browser's button, set as the tiles beside it are, words
+   in the links' colour; while the label shows its back, pressed in, in
+   the tabs' grey. */
+button.tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0;
+  background: none;
+  color: var(--link);
+  font: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+button.tile b {
+  text-decoration: underline;
+}
+
+button.tile[aria-pressed="true"] {
+  background: var(--tab);
+}
+
+.tile img {
+  position: absolute;
+  top: calc(12px - var(--hair));
+  right: calc(8px - var(--hair));
+  width: 48px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.label {
+  margin-top: 16px;
+  padding: calc(12px - var(--hair)) calc(16px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+}
+
+.label p {
+  margin: 0;
+}
+
+.label .label-name {
+  font: var(--subtitle);
+}
+
+.label .story {
+  max-width: 560px;
+  margin-top: 12px;
+}
+
+.label .story p + p {
+  margin-top: 8px;
+}
+
+/* ---- The label's back: the making of it (src/making-of.tsx) -----------
+
+   Its files two to a row (one on a phone), each a small picture in a box
+   of the hairline, to open large, beside three lines: its name, its
+   file's name, what it is. The shell model, a file with no picture, has
+   its kind of file in the box. Under them, in the made one's label's two
+   columns, when and with what it was made, and the prompt. */
+
+.label h2 {
+  margin: 0;
+}
+
+.files {
+  display: grid;
+  grid-template-columns: repeat(2, 360px);
+  gap: 12px 16px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.files li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.file-picture {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 64px;
+  height: 48px;
+  padding: calc(4px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+  background: none;
+  color: var(--quiet);
+  font: var(--text);
+}
+
+button.file-picture {
+  cursor: zoom-in;
+}
+
+.file-picture img {
+  width: 56px;
+  height: 40px;
+  object-fit: contain;
+}
+
+/* The rest of the row beside the picture, not as wide as its words. */
+.file-words {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.file-words > * {
+  overflow-wrap: anywhere;
+}
+
+.file-details {
+  color: var(--quiet);
+}
+
+.made-with {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 4px 16px;
+  margin: 16px 0 0;
+}
+
+.made-with div {
+  display: contents;
+}
+
+.made-with dt {
+  color: var(--quiet);
+}
+
+.made-with dd {
+  margin: 0;
+}
+
+.prompt {
+  max-width: 560px;
+  margin: 0;
+}
+
+/* ---- The exhibit enlarged (src/lightbox.tsx) ---------------------------
+
+   The browser's own dialog, as a frame of the page's paper on the page
+   darkened round it, in the middle of the window, where the browser puts
+   it. A grid of its own, from its own top-left corner; its size is worked
+   out by the script. The frame is 8 each side, the hairline in it. */
+
+.lightbox {
+  box-sizing: border-box;
+  max-width: none;
+  max-height: none;
+  padding: calc(8px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: zoom-out;
+}
+
+.lightbox::backdrop {
+  background: rgb(0 0 0 / 80%);
+  cursor: zoom-out;
+}
+
+/* Its title and line, and beside them (under them, when there is not
+   room) the switch and Close. */
+.lightbox-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-top: 8px;
+  cursor: auto;
+}
+
+.lightbox-caption p {
+  margin: 0;
+}
+
+/* The rest of the row beside the buttons, or all of it above them: as
+   wide as the grid allows, not as its words. */
+.lightbox-words {
+  flex: 1 1 auto;
+}
+
+.lightbox-name {
+  font: var(--subtitle);
+}
+
+.lightbox-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+/* What is opened fills the box the script sizes on the grid (data-fit):
+   the exhibit, or a picture from the label's back, whole. */
+.lightbox .stage {
+  width: 100%;
+  height: 100%;
+}
+
+.lightbox-picture {
+  display: block;
+  object-fit: contain;
+  cursor: auto;
+}
+
+/* ---- Make your own (src/make.tsx) --------------------------------------
+
+   A form of the time, in a box under the exhibit: each row its name on
+   the left and the browser's own controls on the right, on 24px rows (16
+   for the colours), so the names, centred in them, are on the grid. */
+
+/* Turned round by dragging, and not enlarged: the open hand. */
+.make .stage,
+.made .stage {
+  cursor: grab;
+}
+
+.make-form {
+  margin-top: 24px;
+  padding: calc(16px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+}
+
+.make-form p {
+  margin: 0 0 16px;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 16px;
+  align-items: center;
+  justify-items: start;
+  margin-top: 8px;
+}
+
+/* As wide as its column, not as its words. */
+.field-name {
+  justify-self: stretch;
+  font-weight: bold;
+}
+
+/* The colours, four to a row: the browser's own radio button, the
+   colour's square, its name. */
+.field:has(.swatches) {
+  align-items: start;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(4, 144px);
+  gap: 8px;
+}
+
+.swatches label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: var(--leading);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.swatches input {
+  width: var(--leading);
+  height: var(--leading);
+  margin: 0;
+  font: var(--text);
+}
+
+.swatch {
+  box-sizing: border-box;
+  width: var(--leading);
+  height: var(--leading);
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+  background: var(--swatch);
+}
+
+.make-form input[type="text"] {
+  box-sizing: border-box;
+  width: 240px;
+  height: calc(var(--leading) + 8px);
+  margin: 0;
+  font: var(--text);
+}
+
+.make-form input.wide {
+  width: 480px;
+}
+
+/* A letter's box (the card reader's): as wide as the wide one, six of
+   its lines high, and no taller or shorter. */
+.make-form textarea {
+  box-sizing: border-box;
+  width: 480px;
+  height: calc(6 * var(--leading) + 16px);
+  margin: 0;
+  padding: calc(8px - var(--hair));
+  font: var(--text);
+  resize: none;
+}
+
+/* The day a photograph was taken (the camera's): wide enough for a date
+   as the browser writes one, and its calendar's button. */
+.make-form input[type="date"] {
+  box-sizing: border-box;
+  width: 160px;
+  height: calc(var(--leading) + 8px);
+  margin: 0;
+  font: var(--text);
+}
+
+/* The suggestion in an empty box, in the page's quiet grey: the browser's
+   own grey is too faint on its dark box with the light on. */
+.make-form :is(input, textarea)::placeholder {
+  color: var(--quiet);
+  opacity: 1;
+}
+
+/* The camera's photograph, one under another: the frame the shape of the
+   camera's screen (1.44 to 1) it is dragged into place in, at twice its
+   size so it is sharp, drawn round as every box is; how close it is; the
+   button to choose one; and, in grey, what becomes of it. */
+.photo-entry {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  justify-self: stretch;
+}
+
+.crop {
+  display: block;
+  box-sizing: border-box;
+  width: 288px;
+  height: 200px;
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+}
+
+.crop[data-moving] {
+  cursor: grab;
+  touch-action: none;
+}
+
+/* Its slider at the label's right edge, which is on the grid (the word
+   before it is as wide as it is). */
+.zoom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  height: var(--leading);
+}
+
+.zoom input {
+  width: 160px;
+  height: var(--leading);
+  margin: 0;
+  font: var(--text);
+}
+
+.make-form .photo-note {
+  justify-self: stretch;
+  margin: 0;
+  color: var(--quiet);
+}
+
+/* A box and, beside it, the note that Tab takes its suggestion: there
+   only while the box is empty and in use, and not on a phone, which has
+   no Tab key. */
+.entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  justify-self: stretch;
+}
+
+.hint {
+  visibility: hidden;
+  color: var(--quiet);
+}
+
+.entry :is(input, textarea):focus:placeholder-shown + .hint {
+  visibility: visible;
+}
+
+@media (pointer: coarse) {
+  .hint {
+    display: none;
+  }
+}
+
+.field .submit {
+  grid-column: 2;
+}
+
+/* A letter's box: its name level with its first line. */
+.field:has(textarea) {
+  align-items: start;
+}
+
+.field:has(textarea) .field-name {
+  padding-top: 8px;
+}
+
+/* The made one's label: its name and, at the other end, Copy link and
+   Save picture, with what happened when they were last used to their
+   left, in line with their words; then what was chosen and written, in
+   the form's two columns, so each lines up with its box above. */
+.made-label {
+  margin-top: 16px;
+  padding: calc(16px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+}
+
+.made-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px 4px;
+}
+
+.made-head .label-name {
+  margin: 0;
+  font: var(--subtitle);
+}
+
+/* What is left of the line between the name and the buttons; its words
+   at the right, against them. */
+.made-head .status {
+  flex: 1 1 0;
+  margin: 0 4px 4px 0;
+  color: var(--quiet);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.made-label dl {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 4px 16px;
+  margin: 16px 0 0;
+}
+
+.made-label dl div {
+  display: contents;
+}
+
+.made-label dt {
+  color: var(--quiet);
+}
+
+.made-label dd {
+  margin: 0;
+}
+
+
+/* ---- A made one's own page (src/made.tsx) -----------------------------
+
+   The way into the museum; the exhibit as large as the column; at its
+   foot, in the middle, one line saying what it is and whose (Liv,
+   2 October 2026), over its shadow, where the picture fades into the
+   page. */
+
+.made-top {
+  margin: 0;
+}
+
+.made .stage {
+  width: 768px;
+  height: 576px;
+  margin-top: 16px;
+}
+
+/* One that fills its picture more than the others (the card reader, small
+   and wide; Liv, 4 October 2026): 40% smaller on a computer, in the
+   middle, a multiple of 16 wide, so three quarters of it is on the grid. */
+@media (width >= 840px) {
+  .made main[data-smaller] .stage {
+    width: 464px;
+    height: 348px;
+    margin: 16px auto 0;
+  }
+}
+
+.made-words {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -24px;
+  text-align: center;
+}
+
+.made-words h1,
+.made-story {
+  align-self: stretch;
+}
+
+/* Its story, in the titles' type, as the home page's line under its
+   title is. */
+.made-story {
+  margin: 8px 0 0;
+  color: var(--tagline);
+  font: var(--subtitle);
+}
+
+.made-words .light {
+  margin-top: 16px;
+}
+
+/* A card reader's letter, as the file on its card (src/made.tsx ›
+   Letter): drawn round, its name over it, ruled off, as a window of the
+   time headed a file; its words as they were written, line by line. */
+.letter {
+  box-sizing: border-box;
+  width: 480px;
+  margin-top: 16px;
+  padding: calc(8px - var(--hair));
+  border: var(--hair) solid var(--line);
+  border-radius: var(--corner);
+  text-align: left;
+}
+
+.letter-file {
+  margin: 0;
+  padding-bottom: calc(8px - var(--hair));
+  border-bottom: var(--hair) solid var(--line);
+  font-weight: bold;
+}
+
+.letter-words {
+  margin: 8px 0 0;
+  white-space: pre-line;
+}
+
+/* ---- Phones and narrow windows: the column shrinks to fit -------------- */
+
+/* The column is as wide as the screen allows, cut down to a multiple of
+   8, so that its middle, and anything centred in it, is on the grid. */
+@media (width < 840px) {
+  body {
+    padding: 8px;
+  }
+
+  body.home {
+    padding: 0;
+  }
+
+  .column {
+    width: round(down, 100%, 8px);
+    padding: 0 12px 12px;
+  }
+
+  .records {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: calc(round(down, 100%, 8px) - 24px);
+  }
+
+  /* The ring becomes a grid, three across: each column a multiple of 8
+     wide, so the three together are centred on the grid. */
+  .ring {
+    height: auto;
+    margin: 8px 0 0;
+    padding-top: 16px;
+  }
+
+  .centre {
+    position: static;
+    width: auto;
+    margin-bottom: 24px;
+  }
+
+  /* The table keeps the picture and the name; the year and colour go
+     under the name. */
+  .catalogue .wide {
+    display: none;
+  }
+
+  .catalogue th:nth-child(2) {
+    width: auto;
+  }
+
+  .catalogue .narrow {
+    display: block;
+    color: var(--quiet);
+  }
+
+  .exhibits {
+    display: grid;
+    grid-template-columns: repeat(3, min(160px, round(down, (100% - 16px) / 3, 8px)));
+    justify-content: center;
+    gap: 16px 8px;
+  }
+
+  .exhibits li {
+    position: static;
+    width: auto;
+    container-type: inline-size;
+  }
+
+  .exhibits .thumb {
+    --place-w: 100cqw;
+    --place-h: 100cqw;
+    margin-top: calc(var(--place-h) - var(--box-h));
+  }
+
+  .tabs {
+    margin: 0 -12px;
+    padding: 8px 12px 0;
+  }
+
+  /* On a phone, the words in Verdana 14 on a line of 20, and the
+     browser's own boxes, menus and buttons with them, everywhere (Liv,
+     5 October 2026: boxes in 16 beside words in 12 looked huge, and the
+     words too small); what holds them grows with the line (--leading).
+     The one size of type off the grid; its line height is on it, and so
+     is every box (scripts/check-grid.mjs). An iPhone would zoom the page
+     in on a box with type under 16; it is told not to (src/head.ts). */
+  :root {
+    --text: 14px/var(--leading) var(--sans);
+    --leading: 20px;
+  }
+
+  /* The menu and the search box further from the exhibits above them. */
+  .home .picker {
+    margin-top: 32px;
+  }
+
+  /* The title, its line and the light above the exhibit; the exhibit no
+     taller than its width allows, so there is page left to scroll by. */
+  .feature {
+    grid-template-areas: "caption" "stage";
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .caption h1 {
+    font: var(--subtitle);
+  }
+
+  /* On an exhibit's own page the light's switch is beside its name, at
+     the right (Liv, 7 October 2026), level with the middle of the name's
+     first line, as it is beside a page's title; the exhibit's line under
+     both. The name takes the rest of the row, on as many lines as it
+     needs; where even its longest word has not the room, the switch goes
+     under it, still at the right. Make your own keeps its switch under
+     its title, which is as wide as the row. */
+  body:not(.make) .caption {
+    flex-flow: row wrap;
+    align-items: flex-start;
+    column-gap: 12px;
+  }
+
+  body:not(.make) .caption h1 {
+    flex: 1 1 0;
+  }
+
+  body:not(.make) .caption .light {
+    order: 1;
+    margin: 4px 0 8px auto;
+  }
+
+  body:not(.make) .caption .line {
+    order: 2;
+    flex-basis: 100%;
+  }
+
+  /* On the made one's label, what happened goes under the buttons, at
+     the right: beside them there is not room. The name keeps them at the
+     right instead. */
+  .made-head .label-name {
+    flex: 1 1 auto;
+  }
+
+  .made-head .status {
+    flex-basis: 100%;
+    order: 1;
+    margin: 0;
+  }
+
+  .made-head .status:empty {
+    display: none;
+  }
+
+  /* A multiple of 16 wide, so three quarters of it is still on the grid. */
+  .stage,
+  .made .stage {
+    justify-self: center;
+    width: round(down, 100%, 16px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  /* A made one's own page is the screen, no more (Liv, 2 October 2026):
+     the exhibit in the middle of it, its words at its foot, at least 8
+     under the picture, not over its shadow. Three rows: the picture, and
+     above and below it the rest of the screen, shared alike; or, where
+     the words need more than half, theirs, and the exhibit moves up; or,
+     on a screen too short even then, the page scrolls. The way into the
+     museum sits over the top row.
+     The picture is 15% wider than the column (Liv, 3 October 2026), out
+     past its edges, as far as the screen's, where it has faded away; a
+     multiple of 16, measured from the column (cqw). The page is as tall
+     as the picture and two equal halves of the rest of the screen, each a
+     multiple of 4, so everything stays on the grid. */
+  .made .column {
+    position: relative;
+    padding-bottom: 0;
+    container-type: inline-size;
+  }
+
+  .made-top {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    left: 12px;
+  }
+
+  .made main {
+    --stage-w: round(down, min(115cqw, 100cqw + 40px), 16px);
+    --stage-h: calc(var(--stage-w) * 3 / 4);
+    display: grid;
+    grid-template: "." minmax(16px, 1fr) "stage" auto "words" 1fr / 100%;
+    box-sizing: border-box;
+    height: calc(var(--stage-h) + 32px + 2 * round(down, (100svh - 48px - var(--stage-h)) / 2, 4px));
+    padding: 16px 0;
+  }
+
+  .made .stage {
+    width: var(--stage-w);
+    margin: 0;
+  }
+
+  .made-words {
+    grid-area: words;
+    align-self: end;
+    margin-top: 8px;
+  }
+
+  /* Two to a row; one left over (Next) the whole row under them. */
+  .tiles {
+    grid-template-columns: repeat(2, round(down, (100% - 8px) / 2, 4px));
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .tiles li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  /* What is new: two to a row, as the tiles are, 48 under the exhibits,
+     the rows as far apart as the boxes of a row are (Liv, 7 October 2026;
+     32 before, for the New tabs); the last, on its own, as wide as the
+     column. */
+  .news {
+    grid-template-columns: repeat(2, round(down, (100% - 8px) / 2, 4px));
+    justify-content: center;
+    gap: 8px;
+    margin: 48px 0 0;
+  }
+
+  .news li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  /* A New tab on a box under the first row: the rows 32 apart again, room
+     for the tab over it. */
+  .news:has(li:nth-child(n + 3) .news-new) {
+    row-gap: 32px;
+  }
+
+  /* Each row's name over its controls; the colours two to a row; the
+     boxes as wide as the form. */
+  .make-form {
+    padding: calc(12px - var(--hair));
+  }
+
+  .field {
+    grid-template-columns: 100%;
+    gap: 4px;
+  }
+
+  .field:has(textarea) .field-name {
+    padding-top: 0;
+  }
+
+  .swatches {
+    grid-template-columns: repeat(2, 144px);
+  }
+
+  .files {
+    grid-template-columns: 100%;
+  }
+
+  .make-form input[type="text"],
+  .make-form input.wide,
+  .make-form textarea,
+  .make-form input[type="date"] {
+    width: 100%;
+  }
+
+  .letter {
+    width: 100%;
+  }
+
+  .field .submit {
+    grid-column: 1;
+  }
+}
+
+@media (width < 384px) {
+  .exhibits {
+    grid-template-columns: repeat(2, min(160px, round(down, (100% - 8px) / 2, 8px)));
+  }
+}

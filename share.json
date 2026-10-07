@@ -1,0 +1,172 @@
+{
+  "name": "Show Package Contents",
+  "description": "Show Package Contents is a small online museum of portable gadgets from around the millennium, each in a see-through shell that you can turn round and hold up to the light.",
+  "image": {
+    "src": "https://livisliving.github.io/show-package-contents/images/share.jpg",
+    "width": 1200,
+    "height": 630,
+    "alt": "A pager with a clear aqua shell, seen from the front: a dark screen and three black buttons, the inside hidden by the tinted plastic."
+  },
+  "most": {
+    "owner": 24
+  },
+  "first": "pager",
+  "exhibits": {
+    "pager": {
+      "title": "A pager",
+      "titleWith": "A pager on loan from {owner}",
+      "most": 60,
+      "pictures": {
+        "aqua": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/pager-aqua.jpg",
+          "alt": "Pager with an aqua shell, frost: light"
+        },
+        "grape": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/pager-grape.jpg",
+          "alt": "Pager with a grape shell, frost: light"
+        },
+        "pink": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/pager-pink.jpg",
+          "alt": "Pager with a pink shell, frost: light"
+        },
+        "mint": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/pager-mint.jpg",
+          "alt": "Pager with a mint shell, frost: light"
+        },
+        "peach": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/pager-peach.jpg",
+          "alt": "Pager with a peach shell, frost: light"
+        },
+        "lime": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/pager-lime.jpg",
+          "alt": "Pager with a lime shell, frost: light"
+        },
+        "baby-blue": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/pager-baby-blue.jpg",
+          "alt": "Pager with a baby blue shell, frost: light"
+        },
+        "clear": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/pager-clear.jpg",
+          "alt": "Pager with a clear shell, frost: light"
+        }
+      }
+    },
+    "card-reader": {
+      "title": "A card reader",
+      "titleWith": "A card reader on loan from {owner}",
+      "most": 280,
+      "pictures": {
+        "aqua": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/card-reader-aqua.jpg",
+          "alt": "Card reader with an aqua shell, frost: heavy"
+        },
+        "grape": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/card-reader-grape.jpg",
+          "alt": "Card reader with a grape shell, frost: heavy"
+        },
+        "pink": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/card-reader-pink.jpg",
+          "alt": "Card reader with a pink shell, frost: heavy"
+        },
+        "mint": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/card-reader-mint.jpg",
+          "alt": "Card reader with a mint shell, frost: heavy"
+        },
+        "peach": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/card-reader-peach.jpg",
+          "alt": "Card reader with a peach shell, frost: heavy"
+        },
+        "lime": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/card-reader-lime.jpg",
+          "alt": "Card reader with a lime shell, frost: heavy"
+        },
+        "baby-blue": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/card-reader-baby-blue.jpg",
+          "alt": "Card reader with a baby blue shell, frost: heavy"
+        },
+        "clear": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/card-reader-clear.jpg",
+          "alt": "Card reader with a clear shell, frost: heavy"
+        }
+      }
+    },
+    "camera": {
+      "title": "A digital camera",
+      "titleWith": "A digital camera on loan from {owner}",
+      "most": 60,
+      "pictures": {
+        "aqua": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/camera-aqua.jpg",
+          "alt": "Digital camera with an aqua shell, frost: light"
+        },
+        "grape": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/camera-grape.jpg",
+          "alt": "Digital camera with a grape shell, frost: light"
+        },
+        "pink": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/camera-pink.jpg",
+          "alt": "Digital camera with a pink shell, frost: light"
+        },
+        "mint": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/camera-mint.jpg",
+          "alt": "Digital camera with a mint shell, frost: light"
+        },
+        "peach": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/camera-peach.jpg",
+          "alt": "Digital camera with a peach shell, frost: light"
+        },
+        "lime": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/camera-lime.jpg",
+          "alt": "Digital camera with a lime shell, frost: light"
+        },
+        "baby-blue": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/camera-baby-blue.jpg",
+          "alt": "Digital camera with a baby blue shell, frost: light"
+        },
+        "clear": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/camera-clear.jpg",
+          "alt": "Digital camera with a clear shell, frost: light"
+        }
+      }
+    },
+    "mini-console": {
+      "title": "A mini game console",
+      "titleWith": "A mini game console on loan from {owner}",
+      "most": 40,
+      "pictures": {
+        "aqua": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/mini-console-aqua.jpg",
+          "alt": "Mini game console with an aqua shell, frost: light; on its screen, a cat called Cat"
+        },
+        "grape": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/mini-console-grape.jpg",
+          "alt": "Mini game console with a grape shell, frost: light; on its screen, a cat called Cat"
+        },
+        "pink": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/mini-console-pink.jpg",
+          "alt": "Mini game console with a pink shell, frost: light; on its screen, a cat called Cat"
+        },
+        "mint": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/mini-console-mint.jpg",
+          "alt": "Mini game console with a mint shell, frost: light; on its screen, a cat called Cat"
+        },
+        "peach": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/mini-console-peach.jpg",
+          "alt": "Mini game console with a peach shell, frost: light; on its screen, a cat called Cat"
+        },
+        "lime": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/mini-console-lime.jpg",
+          "alt": "Mini game console with a lime shell, frost: light; on its screen, a cat called Cat"
+        },
+        "baby-blue": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/mini-console-baby-blue.jpg",
+          "alt": "Mini game console with a baby blue shell, frost: light; on its screen, a cat called Cat"
+        },
+        "clear": {
+          "src": "https://livisliving.github.io/show-package-contents/images/share/mini-console-clear.jpg",
+          "alt": "Mini game console with a clear shell, frost: light; on its screen, a cat called Cat"
+        }
+      }
+    }
+  }
+}

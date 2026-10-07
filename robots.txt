@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://livisliving.github.io/show-package-contents/sitemap.xml
